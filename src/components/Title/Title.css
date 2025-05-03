@@ -1,0 +1,77 @@
+.title-header {
+  padding: 16px 24px;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+}
+
+.title-text {
+  margin: 0;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.team-name {
+  font-size: 16px;
+  color: #666;
+  font-weight: 500;
+}
+
+.title-left {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+/* ✅ 알고리즘 박스 + Run 버튼을 한 줄에 정렬 */
+.algo-config-wrapper {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+  align-items: stretch;
+}
+
+/* Algorithm + Time Quantum 필드 */
+.algo-config-box {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  border: 1px solid #ccc;
+  padding: 8px 12px;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  min-height: 54px;
+  align-items: center;
+}
+
+.config-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 14px;
+}
+
+select,
+input {
+  padding: 6px;
+  font-size: 14px;
+  width: 120px;
+}
+
+/* ✅ 오른쪽에 붙는 작은 Run 버튼 */
+.run-button {
+  padding: 0 16px;
+  font-size: 14px;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  height: 54px; /* 설정 박스와 수직 맞춤 */
+}
+
+.run-button:hover {
+  background-color: #388e3c;
+}

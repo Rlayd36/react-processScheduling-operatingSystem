@@ -1,0 +1,79 @@
+.gantt-chart {
+  padding: 16px;
+  border: 1px solid #ccc;
+  background-color: #fafafa;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  box-sizing: border-box;
+  border-radius: 8px;
+
+  width: 100%;
+  height: 300px;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.gantt-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+}
+
+.core-row {
+  display: flex;
+  align-items: center;
+}
+
+.core-label {
+  width: 70px;
+  font-weight: bold;
+  flex-shrink: 0;
+}
+
+.core-bar {
+  position: relative;
+  height: 36px;
+  background-color: #eee;
+  border-radius: 4px;
+  flex-shrink: 0;
+}
+
+.gantt-block {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  line-height: 36px;
+  border-radius: 4px;
+  overflow: hidden;
+
+  /* 중요: 정확한 너비 계산 위해 여백 제거 */
+  padding: 0;
+  margin: 0;
+  border: none;
+  box-sizing: border-box;
+}
+
+.time-grid-wrapper {
+  margin-top: 8px;
+  padding-left: 70px; /* core-label과 정확히 맞춤 */
+}
+
+.time-grid {
+  display: flex;
+  height: 20px;
+  font-size: 13px;
+  color: #444;
+}
+
+.time-tick {
+  width: 40px;
+  text-align: center;
+  border-right: 1px solid #ddd;
+  box-sizing: border-box;
+}
