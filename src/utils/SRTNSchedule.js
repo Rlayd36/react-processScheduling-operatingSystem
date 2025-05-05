@@ -23,6 +23,7 @@ export function SRTNSchedule(processes, cores) {
       scheduleLog: [],
       totalEnergy: 0,
       avgNTT: 0,
+      readyQueueLog: {}, // ✅ 추가
     };
   }
 
@@ -35,6 +36,7 @@ export function SRTNSchedule(processes, cores) {
   let totalEnergy = 0;
   let currentTime = 0;
   const readyQueue = [];
+  const readyQueueLog = {}; // ✅ 추가
   const executionMap = new Map();
 
   while (
@@ -52,6 +54,9 @@ export function SRTNSchedule(processes, cores) {
 
     // 준비된 프로세스를 burstTime 기준으로 정렬
     readyQueue.sort((a, b) => a.burstTime - b.burstTime);
+
+    // ✅ Ready Queue 상태 기록
+    readyQueueLog[currentTime] = readyQueue.map((p) => p.id);
 
     // 빈 코어에 작업 할당
     for (const core of activeCores) {
@@ -123,6 +128,7 @@ export function SRTNSchedule(processes, cores) {
       }
     }
 
+    // 시간 이동
     if (
       activeCores.every((c) => !c.currentProcess) &&
       readyQueue.length === 0 &&
@@ -145,5 +151,6 @@ export function SRTNSchedule(processes, cores) {
     scheduleLog: ganttLogs,
     totalEnergy: Number(totalEnergy.toFixed(2)),
     avgNTT,
+    readyQueueLog, // ✅ 포함
   };
 }

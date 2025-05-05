@@ -29,6 +29,7 @@ function App() {
   const [ganttData, setGanttData] = useState([]);
   const [totalEnergy, setTotalEnergy] = useState(0);
   const [avgNTT, setAvgNTT] = useState(0);
+  const [readyQueueLog, setReadyQueueLog] = useState({}); // 추가
 
   const [currentTime, setCurrentTime] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -38,37 +39,57 @@ function App() {
     setCurrentTime(0);
     setIsRunning(true);
 
-    let scheduleResult;
+    let scheduleResult = {
+      result: [],
+      scheduleLog: [],
+      totalEnergy: 0,
+      avgNTT: 0,
+      readyQueueLog: {},
+    };
 
-    if (algorithm === "FCFS") {
-      scheduleResult = FCFSSchedule(processes, cores);
-    } else if (algorithm === "RR") {
-      scheduleResult = RRSchedule(processes, cores, quantum);
-    } else if (algorithm === "HRRN") {
-      scheduleResult = HRRNSchedule(processes, cores);
-    } else if (algorithm === "SRTN") {
-      scheduleResult = SRTNSchedule(processes, cores);
-    } else if (algorithm === "HR4P") {
-      scheduleResult = HR4PSchedule(processes, cores, quantum);
-    } else if (algorithm === "SPN") {
-      scheduleResult = SPNSchedule(processes, cores);
+    switch (algorithm) {
+      case "FCFS":
+        scheduleResult = FCFSSchedule(processes, cores);
+        break;
+      case "RR":
+        scheduleResult = RRSchedule(processes, cores, quantum);
+        break;
+      case "HRRN":
+        scheduleResult = HRRNSchedule(processes, cores);
+        break;
+      case "SRTN":
+        scheduleResult = SRTNSchedule(processes, cores);
+        break;
+      case "HR4P":
+        scheduleResult = HR4PSchedule(processes, cores, quantum);
+        break;
+      case "SPN":
+        scheduleResult = SPNSchedule(processes, cores);
+        break;
+      default:
+        break;
     }
 
-    if (scheduleResult) {
-      const { result, scheduleLog, totalEnergy, avgNTT } = scheduleResult;
+    const {
+      result,
+      scheduleLog,
+      totalEnergy,
+      avgNTT,
+      readyQueueLog = {},
+    } = scheduleResult;
 
-      const flattenedSchedule = scheduleLog.flatMap((core) =>
-        core.blocks.map((block) => ({
-          ...block,
-          coreId: core.coreId,
-        }))
-      );
+    const flattenedSchedule = scheduleLog.flatMap((core) =>
+      core.blocks.map((block) => ({
+        ...block,
+        coreId: core.coreId,
+      }))
+    );
 
-      setResultData(result);
-      setGanttData(flattenedSchedule);
-      setTotalEnergy(totalEnergy);
-      setAvgNTT(avgNTT);
-    }
+    setResultData(result);
+    setGanttData(flattenedSchedule);
+    setTotalEnergy(totalEnergy);
+    setAvgNTT(avgNTT);
+    setReadyQueueLog(readyQueueLog); // 추가
   };
 
   useEffect(() => {
@@ -118,6 +139,8 @@ function App() {
               data={ganttData}
               currentTime={currentTime}
               processes={processes}
+              algorithm={algorithm}
+              readyQueueLog={readyQueueLog}
             />
           </div>
           <div className="right-bottom">
