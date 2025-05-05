@@ -25,7 +25,6 @@
   gap: 24px;
 }
 
-/* ✅ 알고리즘 박스 + Run 버튼을 한 줄에 정렬 */
 .algo-config-wrapper {
   display: flex;
   flex-direction: row;
@@ -33,7 +32,6 @@
   align-items: stretch;
 }
 
-/* Algorithm + Time Quantum 필드 */
 .algo-config-box {
   display: flex;
   flex-direction: row;
@@ -60,7 +58,6 @@ input {
   width: 120px;
 }
 
-/* ✅ 오른쪽에 붙는 작은 Run 버튼 */
 .run-button {
   padding: 0 16px;
   font-size: 14px;
@@ -69,7 +66,7 @@ input {
   border: none;
   border-radius: 6px;
   cursor: pointer;
-  height: 54px; /* 설정 박스와 수직 맞춤 */
+  height: 54px;
 }
 
 .run-button:hover {

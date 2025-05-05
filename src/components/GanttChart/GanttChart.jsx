@@ -1,13 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import "./GanttChart.css";
 
-function GanttChart({
-  data,
-  currentTime,
-  processes,
-  algorithm,
-  readyQueueLog,
-}) {
+function GanttChart({ data, currentTime, readyQueueLog }) {
   const TIME_UNIT_WIDTH = 40;
   const chartRef = useRef(null);
 

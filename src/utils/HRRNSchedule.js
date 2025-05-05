@@ -2,7 +2,7 @@ export function HRRNSchedule(processes, cores) {
   const sorted = [...processes].sort((a, b) => a.arrivalTime - b.arrivalTime);
   const results = [];
   const rawLog = [];
-  const readyQueueLog = {}; // ✅ 추가
+  const readyQueueLog = {}; // 레디 큐 로그 값
   let currentTime = 0;
   let totalEnergy = 0;
   const waitingQueue = [];
@@ -22,7 +22,7 @@ export function HRRNSchedule(processes, cores) {
       totalEnergy: 0,
       scheduleLog: [],
       avgNTT: 0,
-      readyQueueLog: {}, // ✅ 빈 로그 포함
+      readyQueueLog: {},
     };
 
   let remaining = [...sorted];
@@ -42,7 +42,6 @@ export function HRRNSchedule(processes, cores) {
       return rrB - rrA;
     });
 
-    // ✅ Ready Queue 상태 기록
     readyQueueLog[currentTime] = waitingQueue.map((p) => p.id);
 
     const freeCores = activeCores
@@ -137,6 +136,6 @@ export function HRRNSchedule(processes, cores) {
     scheduleLog,
     totalEnergy: parseFloat(totalEnergy.toFixed(2)),
     avgNTT: parseFloat(avgNTT.toFixed(2)),
-    readyQueueLog, // ✅ 포함
+    readyQueueLog,
   };
 }

@@ -21,7 +21,7 @@ export function FCFSSchedule(processes, cores) {
       scheduleLog: [],
       totalEnergy: 0,
       avgNTT: 0,
-      readyQueueLog: {}, // ✅ 추가
+      readyQueueLog: {}, // 레디 큐 로그 리턴 값 추가
     };
   }
 
@@ -33,13 +33,12 @@ export function FCFSSchedule(processes, cores) {
 
   const result = [];
   let totalEnergy = 0;
-  const readyQueueLog = {}; // ✅ 추가
+  const readyQueueLog = {};
   const remainingProcesses = [...sortedProcesses];
   const waitingList = [];
 
   // 처리 메인
   while (remainingProcesses.length > 0 || waitingList.length > 0) {
-    // 1. 현재 시간에 도착한 프로세스 waitingList에 추가
     while (
       remainingProcesses.length > 0 &&
       remainingProcesses[0].arrivalTime <= currentTime
@@ -47,10 +46,8 @@ export function FCFSSchedule(processes, cores) {
       waitingList.push(remainingProcesses.shift());
     }
 
-    // 2. 현재 ready queue 기록
-    readyQueueLog[currentTime] = waitingList.map((p) => p.id); // ✅ 핵심
+    readyQueueLog[currentTime] = waitingList.map((p) => p.id); // 현재 큐 배열 상태 저장
 
-    // 3. 코어 사용 가능한 순서로 할당
     for (const core of activeCores) {
       if (waitingList.length === 0) break;
       if (core.availableAt <= currentTime) {
@@ -98,7 +95,6 @@ export function FCFSSchedule(processes, cores) {
       }
     }
 
-    // 4. 다음 시간으로 이동
     currentTime++;
   }
 
@@ -113,6 +109,6 @@ export function FCFSSchedule(processes, cores) {
     scheduleLog: ganttLogs,
     totalEnergy,
     avgNTT,
-    readyQueueLog, // ✅ 포함
+    readyQueueLog, // 레디 큐 로그 값 리턴
   };
 }

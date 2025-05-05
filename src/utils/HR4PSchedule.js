@@ -14,7 +14,7 @@ export function HR4PSchedule(processes, cores, quantum) {
       scheduleLog: [],
       totalEnergy: 0,
       avgNTT: 0,
-      readyQueueLog: {}, // 추가
+      readyQueueLog: {}, // 레디 큐 로그 리턴 값 추가
     };
   }
 
@@ -34,7 +34,7 @@ export function HR4PSchedule(processes, cores, quantum) {
   let time = 0;
   let procIndex = 0;
   let totalEnergy = 0;
-  const readyQueueLog = {}; // ✅ 추가
+  const readyQueueLog = {}; // 레디 큐 로그
 
   sortedProcesses.forEach((p) => {
     remainingTimeMap[p.id] = p.burstTime;
@@ -57,7 +57,6 @@ export function HR4PSchedule(processes, cores, quantum) {
       }
     }
 
-    // 🔽 Response Ratio 기준 정렬
     readyQueue.sort((a, b) => {
       const rrA = getResponseRatio(
         a,
@@ -74,7 +73,6 @@ export function HR4PSchedule(processes, cores, quantum) {
       return rrB - rrA;
     });
 
-    // ✅ 정렬된 상태로 Ready Queue 기록
     readyQueueLog[time] = readyQueue.map((p) => p.id);
 
     const freeCores = activeCores
@@ -146,7 +144,7 @@ export function HR4PSchedule(processes, cores, quantum) {
     scheduleLog,
     totalEnergy,
     avgNTT,
-    readyQueueLog, // ✅ 포함
+    readyQueueLog,
   };
 
   function getResponseRatio(proc, currentTime, remainingBT, workedTime) {

@@ -30,7 +30,7 @@ export function SPNSchedule(processes, cores) {
   let time = 0;
   let totalEnergy = 0;
   const completed = [];
-  const readyQueueLog = {}; // ✅ 추가
+  const readyQueueLog = {};
 
   // 5) 시뮬레이션 루프
   while (completed.length < procs.length) {
@@ -42,7 +42,6 @@ export function SPNSchedule(processes, cores) {
       )
       .sort((a, b) => a.remaining - b.remaining);
 
-    // ✅ readyQueueLog 기록
     readyQueueLog[time] = readyQueue.map((p) => p.id);
 
     // (b) SPN 할당
@@ -124,6 +123,6 @@ export function SPNSchedule(processes, cores) {
     scheduleLog,
     totalEnergy,
     avgNTT,
-    readyQueueLog, // ✅ 추가
+    readyQueueLog,
   };
 }

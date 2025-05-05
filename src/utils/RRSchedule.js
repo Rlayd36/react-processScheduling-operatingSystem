@@ -14,7 +14,7 @@ export function RRSchedule(processes, cores, quantum) {
       scheduleLog: [],
       totalEnergy: 0,
       avgNTT: 0,
-      readyQueueLog: {}, // ← 빈 로그 반환
+      readyQueueLog: {},
     };
   }
 
@@ -36,7 +36,7 @@ export function RRSchedule(processes, cores, quantum) {
   let time = 0;
   let procIndex = 0;
   let totalEnergy = 0;
-  const readyQueueLog = {}; // ← 추가됨
+  const readyQueueLog = {}; // 레디 큐 로그
 
   sortedProcesses.forEach((p) => {
     remainingTimeMap[p.id] = p.burstTime;
@@ -44,7 +44,6 @@ export function RRSchedule(processes, cores, quantum) {
   });
 
   while (result.length < sortedProcesses.length) {
-    // 새로 도착한 프로세스 추가
     while (
       procIndex < sortedProcesses.length &&
       sortedProcesses[procIndex].arrivalTime <= time
@@ -53,7 +52,6 @@ export function RRSchedule(processes, cores, quantum) {
       procIndex++;
     }
 
-    // Quantum 끝나고 다시 들어오는 프로세스 추가
     for (let i = delayedQueue.length - 1; i >= 0; i--) {
       const entry = delayedQueue[i];
       if (entry.availableAt <= time) {
@@ -62,15 +60,12 @@ export function RRSchedule(processes, cores, quantum) {
       }
     }
 
-    // ⏺ Ready Queue 상태 기록
     readyQueueLog[time] = readyQueue.map((p) => p.id);
 
-    // 사용 가능한 코어 찾기
     const freeCores = activeCores
       .filter((core) => core.availableAt <= time)
       .sort((a, b) => a.id - b.id);
 
-    // 프로세스 할당
     const assigned = readyQueue.splice(0, freeCores.length);
 
     for (let i = 0; i < assigned.length; i++) {
@@ -133,6 +128,6 @@ export function RRSchedule(processes, cores, quantum) {
     scheduleLog,
     totalEnergy,
     avgNTT,
-    readyQueueLog, // ← 포함됨
+    readyQueueLog,
   };
 }

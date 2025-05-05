@@ -89,7 +89,7 @@ function App() {
     setGanttData(flattenedSchedule);
     setTotalEnergy(totalEnergy);
     setAvgNTT(avgNTT);
-    setReadyQueueLog(readyQueueLog); // 추가
+    setReadyQueueLog(readyQueueLog);
   };
 
   useEffect(() => {
@@ -138,8 +138,6 @@ function App() {
             <GanttChart
               data={ganttData}
               currentTime={currentTime}
-              processes={processes}
-              algorithm={algorithm}
               readyQueueLog={readyQueueLog}
             />
           </div>
