@@ -1,4 +1,3 @@
-// HR4P: Hybrid Response-Ratio Round Robin Scheduler (중복 실행 + 실행 중 재할당 문제 해결)
 export function HR4PSchedule(processes, cores, quantum) {
   const activeCores = cores
     .map((core, index) => ({
@@ -41,7 +40,6 @@ export function HR4PSchedule(processes, cores, quantum) {
   });
 
   while (result.length < sortedProcesses.length) {
-    // 도착한 프로세스 readyQueue에 추가
     while (
       procIndex < sortedProcesses.length &&
       sortedProcesses[procIndex].arrivalTime <= time
@@ -50,7 +48,6 @@ export function HR4PSchedule(processes, cores, quantum) {
       procIndex++;
     }
 
-    // delayedQueue에서 현재 시간에 사용할 수 있는 프로세스만 이동
     for (let i = delayedQueue.length - 1; i >= 0; i--) {
       if (delayedQueue[i].availableAt <= time) {
         readyQueue.push(delayedQueue[i].proc);
@@ -58,7 +55,6 @@ export function HR4PSchedule(processes, cores, quantum) {
       }
     }
 
-    // readyQueue를 Response Ratio 기준 정렬
     readyQueue.sort((a, b) => {
       const rrA = getResponseRatio(
         a,

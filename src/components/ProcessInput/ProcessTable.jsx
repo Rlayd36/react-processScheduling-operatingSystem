@@ -8,7 +8,7 @@ function ProcessTable({ processes }) {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [processes]); // processes가 변경될 때마다 실행됨
+  }, [processes]);
 
   return (
     <div className="process-table">

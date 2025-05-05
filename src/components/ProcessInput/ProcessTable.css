@@ -1,6 +1,6 @@
 .process-table {
-  flex: 0.7; /* ✅ process-box 내부에서 너비 비율 */
-  height: 100%; /* ✅ 부모 높이만큼 차지 */
+  flex: 0.7;
+  height: 100%;
   width: 100%;
   display: flex;
   flex-direction: column;

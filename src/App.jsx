@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Title from "./components/Title/Title";
-import ProcessBox from "./components/ProcessInput/ProcessBox"; // 내부에서 ProcessInput + Table 분리 가능 시 대체
+import ProcessBox from "./components/ProcessInput/ProcessBox";
 import CoreSettings from "./components/CoreSettings/CoreSettings";
 import GanttChart from "./components/GanttChart/GanttChart";
 import ResultTable from "./components/ResultTable/ResultTable";
@@ -9,10 +9,10 @@ import { FCFSSchedule } from "./utils/FCFSSchedule";
 import { RRSchedule } from "./utils/RRSchedule";
 import { HRRNSchedule } from "./utils/HRRNSchedule";
 import { HR4PSchedule } from "./utils/HR4PSchedule";
-
-import "./App.css";
 import { SRTNSchedule } from "./utils/SRTNSchedule";
 import { SPNSchedule } from "./utils/SPNSchedule";
+
+import "./App.css";
 
 function App() {
   const [processes, setProcesses] = useState([]);
@@ -30,70 +30,65 @@ function App() {
   const [totalEnergy, setTotalEnergy] = useState(0);
   const [avgNTT, setAvgNTT] = useState(0);
 
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const [stepIntervalSec, setStepIntervalSec] = useState(1);
+
   const handleRun = () => {
+    setCurrentTime(0);
+    setIsRunning(true);
+
+    let scheduleResult;
+
     if (algorithm === "FCFS") {
-      const { result, scheduleLog, totalEnergy, avgNTT } = FCFSSchedule(
-        processes,
-        cores
-      );
-
-      console.log(result);
-      setResultData(result);
-      setGanttData(scheduleLog);
-      setTotalEnergy(totalEnergy);
-      setAvgNTT(avgNTT);
+      scheduleResult = FCFSSchedule(processes, cores);
     } else if (algorithm === "RR") {
-      const { result, scheduleLog, totalEnergy, avgNTT } = RRSchedule(
-        processes,
-        cores,
-        quantum
+      scheduleResult = RRSchedule(processes, cores, quantum);
+    } else if (algorithm === "HRRN") {
+      scheduleResult = HRRNSchedule(processes, cores);
+    } else if (algorithm === "SRTN") {
+      scheduleResult = SRTNSchedule(processes, cores);
+    } else if (algorithm === "HR4P") {
+      scheduleResult = HR4PSchedule(processes, cores, quantum);
+    } else if (algorithm === "SPN") {
+      scheduleResult = SPNSchedule(processes, cores);
+    }
+
+    if (scheduleResult) {
+      const { result, scheduleLog, totalEnergy, avgNTT } = scheduleResult;
+
+      const flattenedSchedule = scheduleLog.flatMap((core) =>
+        core.blocks.map((block) => ({
+          ...block,
+          coreId: core.coreId,
+        }))
       );
 
       setResultData(result);
-      setGanttData(scheduleLog);
-      setTotalEnergy(totalEnergy);
-      setAvgNTT(avgNTT);
-    } else if (algorithm === "HRRN") {
-      const { result, scheduleLog, totalEnergy, avgNTT } = HRRNSchedule(
-        processes,
-        cores
-      );
-      console.log(result);
-      setResultData(result);
-      setGanttData(scheduleLog);
-      setTotalEnergy(totalEnergy);
-      setAvgNTT(avgNTT);
-    } else if (algorithm === "SRTN") {
-      const { result, scheduleLog, totalEnergy, avgNTT } = SRTNSchedule(
-        processes,
-        cores
-      );
-      setResultData(result);
-      setGanttData(scheduleLog);
-      setTotalEnergy(totalEnergy);
-      setAvgNTT(avgNTT);
-    } else if (algorithm === "HR4P") {
-      const { result, scheduleLog, totalEnergy, avgNTT } = HR4PSchedule(
-        processes,
-        cores,
-        quantum
-      );
-      setResultData(result);
-      setGanttData(scheduleLog);
-      setTotalEnergy(totalEnergy);
-      setAvgNTT(avgNTT);
-    } else if (algorithm === "SPN") {
-      const { result, scheduleLog, totalEnergy, avgNTT } = SPNSchedule(
-        processes,
-        cores
-      );
-      console.log(result, scheduleLog);
-      setResultData(result);
-      setGanttData(scheduleLog);
+      setGanttData(flattenedSchedule);
       setTotalEnergy(totalEnergy);
       setAvgNTT(avgNTT);
     }
   };
+
+  useEffect(() => {
+    if (!isRunning || ganttData.length === 0) return;
+
+    const maxEnd = Math.max(...ganttData.map((b) => b.end));
+
+    const interval = setInterval(() => {
+      setCurrentTime((prev) => {
+        if (prev + 1 > maxEnd) {
+          clearInterval(interval);
+          setIsRunning(false);
+          return prev;
+        }
+        return prev + 1;
+      });
+    }, stepIntervalSec * 1000);
+
+    return () => clearInterval(interval);
+  }, [isRunning, ganttData, stepIntervalSec]);
 
   return (
     <div className="App">
@@ -104,6 +99,8 @@ function App() {
           quantum={quantum}
           setQuantum={setQuantum}
           onRun={handleRun}
+          stepIntervalSec={stepIntervalSec}
+          setStepIntervalSec={setStepIntervalSec}
         />
       </div>
       <div className="body">
@@ -117,7 +114,11 @@ function App() {
         </div>
         <div className="right">
           <div className="right-top">
-            <GanttChart data={ganttData} />
+            <GanttChart
+              data={ganttData}
+              currentTime={currentTime}
+              processes={processes}
+            />
           </div>
           <div className="right-bottom">
             <ResultTable

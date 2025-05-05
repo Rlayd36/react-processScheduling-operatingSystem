@@ -1,23 +1,19 @@
-/* 전체 앱 레이아웃 */
 .App {
   display: flex;
   flex-direction: column;
   height: 100vh;
 }
 
-/* 상단 제목 영역 */
 .top {
   flex-shrink: 0;
 }
 
-/* 본문 영역 (좌/우 나눔) */
 .body {
   display: flex;
   flex: 1;
   overflow: hidden;
 }
 
-/* 왼쪽/오른쪽 각각 50% 너비, 위/아래 분할 */
 .left {
   display: flex;
   flex-direction: column;
@@ -35,23 +31,27 @@
   gap: 12px;
 }
 
-/* 위/아래 영역은 동일한 높이 (flex: 1) */
-.left-top,
+.left-top {
+  flex: 0.5;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
 .left-bottom {
-  flex: 1;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 
 .right-top {
-  flex: 0.37;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
 }
 .right-bottom {
-  flex: 0.63;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;

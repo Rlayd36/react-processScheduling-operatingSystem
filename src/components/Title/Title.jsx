@@ -1,13 +1,28 @@
 import React from "react";
 import "./Title.css";
 
-function Title({ algorithm, setAlgorithm, quantum, setQuantum, onRun }) {
+function Title({
+  algorithm,
+  setAlgorithm,
+  quantum,
+  setQuantum,
+  onRun,
+  stepIntervalSec,
+  setStepIntervalSec,
+}) {
   const handleAlgorithmChange = (e) => {
     setAlgorithm(e.target.value);
   };
 
   const handleQuantumChange = (e) => {
     setQuantum(e.target.value);
+  };
+
+  const handleStepIntervalChange = (e) => {
+    const value = parseFloat(e.target.value);
+    if (!isNaN(value) && value > 0) {
+      setStepIntervalSec(value);
+    }
   };
 
   return (
@@ -27,6 +42,7 @@ function Title({ algorithm, setAlgorithm, quantum, setQuantum, onRun }) {
                 <option value="HR4P">HR4P</option>
               </select>
             </label>
+
             <label className="config-item">
               <span>Time Quantum</span>
               <input
@@ -36,12 +52,25 @@ function Title({ algorithm, setAlgorithm, quantum, setQuantum, onRun }) {
                 disabled={algorithm !== "RR" && algorithm !== "HR4P"}
               />
             </label>
+
+            <label className="config-item">
+              <span>Step Interval (sec)</span>
+              <input
+                type="number"
+                min="0.1"
+                step="0.1"
+                value={stepIntervalSec}
+                onChange={handleStepIntervalChange}
+              />
+            </label>
           </div>
+
           <button className="run-button" onClick={onRun}>
             Run
           </button>
         </div>
       </div>
+
       <span className="team-name">땡초파</span>
     </header>
   );

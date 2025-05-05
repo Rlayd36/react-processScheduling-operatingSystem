@@ -9,9 +9,10 @@
   border-radius: 8px;
 
   width: 100%;
-  height: 300px;
+  height: 100%;
   overflow-x: auto;
   overflow-y: hidden;
+  white-space: nowrap;
 }
 
 .gantt-title {
@@ -51,17 +52,16 @@
   line-height: 36px;
   border-radius: 4px;
   overflow: hidden;
-
-  /* 중요: 정확한 너비 계산 위해 여백 제거 */
   padding: 0;
   margin: 0;
   border: none;
   box-sizing: border-box;
+  transition: width 0.5s ease-out;
 }
 
 .time-grid-wrapper {
   margin-top: 8px;
-  padding-left: 70px; /* core-label과 정확히 맞춤 */
+  padding-left: 70px;
 }
 
 .time-grid {
@@ -76,4 +76,40 @@
   text-align: center;
   border-right: 1px solid #ddd;
   box-sizing: border-box;
+}
+
+.ready-queue {
+  margin-top: 16px;
+  padding: 8px 0;
+  border-top: 1px dashed #aaa;
+  background-color: #f5f5f5;
+  padding-left: 70px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.ready-queue h4 {
+  margin: 0;
+  font-size: 15px;
+  color: #333;
+}
+
+.queue-box {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+.queue-item {
+  padding: 6px 12px;
+  background-color: #90caf9;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.queue-empty {
+  color: #999;
+  font-style: italic;
 }
