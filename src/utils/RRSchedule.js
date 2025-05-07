@@ -60,7 +60,7 @@ export function RRSchedule(processes, cores, quantum) {
       }
     }
 
-    readyQueueLog[time] = readyQueue.map((p) => p.id);
+    readyQueueLog[time] = readyQueue.map((p) => p.id); // 현재 레디 큐 값 저장
 
     const freeCores = activeCores
       .filter((core) => core.availableAt <= time)
@@ -128,6 +128,6 @@ export function RRSchedule(processes, cores, quantum) {
     scheduleLog,
     totalEnergy,
     avgNTT,
-    readyQueueLog,
+    readyQueueLog, // 레디 큐 로그 리턴
   };
 }

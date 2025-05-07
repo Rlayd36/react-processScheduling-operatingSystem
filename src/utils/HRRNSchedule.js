@@ -22,7 +22,7 @@ export function HRRNSchedule(processes, cores) {
       totalEnergy: 0,
       scheduleLog: [],
       avgNTT: 0,
-      readyQueueLog: {},
+      readyQueueLog: {}, // 레디 큐 로그 리턴
     };
 
   let remaining = [...sorted];
@@ -42,7 +42,7 @@ export function HRRNSchedule(processes, cores) {
       return rrB - rrA;
     });
 
-    readyQueueLog[currentTime] = waitingQueue.map((p) => p.id);
+    readyQueueLog[currentTime] = waitingQueue.map((p) => p.id); // 현재 레디 큐 값 저장
 
     const freeCores = activeCores
       .filter((core) => core.busyUntil <= currentTime)
@@ -136,6 +136,6 @@ export function HRRNSchedule(processes, cores) {
     scheduleLog,
     totalEnergy: parseFloat(totalEnergy.toFixed(2)),
     avgNTT: parseFloat(avgNTT.toFixed(2)),
-    readyQueueLog,
+    readyQueueLog, // 레디 큐 로그 리턴
   };
 }
